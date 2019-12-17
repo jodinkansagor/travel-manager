@@ -6,11 +6,19 @@ const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Trip = require('../lib/Models/Trip');
 
-// jest.mock('lib/services/weather.js', () => ({
-//   fetchWeather() {
-//     return Promise.resolve('My weather');
-//   }
-// }));
+jest.mock('../lib/services/woeid.js', () => ({
+  makeWoeIdCall() {
+    return Promise.resolve('my woeId');
+  }
+}));
+
+jest.mock('../lib/services/weather.js', () => ({
+  fetchWeather() {
+    return Promise.resolve('My weather');
+  }
+}));
+
+
 
 describe('app routes', () => {
   beforeAll(() => {
@@ -19,6 +27,24 @@ describe('app routes', () => {
 
   beforeEach(() => {
     return mongoose.connection.dropDatabase();
+  });
+
+  beforeEach(() => {
+    Trip.create({
+      name: 'new vacation',
+      departureDate: 'December 22, 2019',
+      returnDate: 'January 5, 2020',
+      destination: 'New Jersey',
+      itineraryItems: {
+        name: 'Duke Gardens',
+        dateOfEvent: 28,
+        monthOfEvent: 12,
+        yearOfEvent: 2019,
+        latitudeOfEvent: 40.51,
+        longitudeOfEvent: -74.64
+      }
+    });
+    console.log(this);
   });
 
   afterAll(() => {
@@ -38,6 +64,14 @@ describe('app routes', () => {
           destination: 'New Jersey',
           __v: 0
         });
+      });
+  });
+
+  it('gets a trip by id', () => {
+    return request(app)
+      .get('/api/v1/trips')
+      .then(res => {
+        expect(res.body.itineraryItems.weather).not.toBeNull;
       });
   });
 });
