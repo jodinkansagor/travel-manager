@@ -20,7 +20,7 @@ describe('app routes', () => {
   let londonTrip;
   let longBuckby;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     londonTrip = await Trip
       .create({
         name: 'excited to be away', departureDate: '2019-12-22T08:00:00.000Z',

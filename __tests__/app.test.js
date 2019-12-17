@@ -40,7 +40,7 @@ describe('app routes', () => {
       });
   });
 
-  it('gets all trips', async () => {
+  it('gets all trips', async() => {
     const trips = await Trip.create([
       {
         name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
@@ -60,7 +60,7 @@ describe('app routes', () => {
       });
   });
 
-  it('gets a trip by id', async () => {
+  it('gets a trip by id', async() => {
     const trip = await Trip.create({
       name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
       returnDate: '2020-01-05T08:00:00.000Z',
@@ -81,7 +81,7 @@ describe('app routes', () => {
       });
   });
 
-  it('can update one trip', async () => {
+  it('can update one trip', async() => {
     const trip = await Trip.create({
       name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
       returnDate: '2020-01-05T08:00:00.000Z',
@@ -102,7 +102,7 @@ describe('app routes', () => {
       });
   });
 
-  it('can delete a trip', async () => {
+  it('can delete a trip', async() => {
     const trip = await Trip.create({
       name: 'excited to be home', departureDate: '2019-12-22T08:00:00.000Z',
       returnDate: '2020-01-05T08:00:00.000Z',
