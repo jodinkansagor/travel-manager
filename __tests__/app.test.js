@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Trip = require('../lib/Models/Trip');
+const ItineraryItem = require('../lib/Models/ItineraryItem');
 
 jest.mock('../lib/services/woeid.js', () => ({
   makeWoeIdCall() {
@@ -29,23 +30,32 @@ describe('app routes', () => {
     return mongoose.connection.dropDatabase();
   });
 
-  beforeEach(() => {
-    Trip.create({
-      name: 'new vacation',
-      departureDate: 'December 22, 2019',
-      returnDate: 'January 5, 2020',
-      destination: 'New Jersey',
-      itineraryItems: {
-        name: 'Duke Gardens',
-        dateOfEvent: 28,
-        monthOfEvent: 12,
-        yearOfEvent: 2019,
-        latitudeOfEvent: 40.51,
-        longitudeOfEvent: -74.64
-      }
-    });
-    console.log(this);
+  let trip;
+  let intineraryItem;
+  beforeEach(async () => {
+    trip = await Trip
+      .create({
+        name: 'new vacation',
+        departureDate: 'December 22, 2019',
+        returnDate: 'January 5, 2020',
+        destination: 'New Jersey'
+      });
+    intineraryItem = await ItineraryItem
+      .create([
+        {
+          name: 'Duke Gardens',
+          dateOfEvent: 28,
+          monthOfEvent: 12,
+          yearOfEvent: 2019,
+          latitudeOfEvent: 40.51,
+          longitudeOfEvent: -74.64,
+          trip: `${trip._id}`,
+          weather: 'its freakin raining'
+        }
+      ]);
   });
+
+
 
   afterAll(() => {
     return mongoose.connection.close();
@@ -54,7 +64,9 @@ describe('app routes', () => {
   it('creates a new trip', () => {
     return request(app)
       .post('/api/v1/trips')
-      .send({ name: 'new vacation', departureDate: 'December 22, 2019', returnDate: 'January 5, 2020', destination: 'New Jersey' })
+      .send({
+        name: 'new vacation', departureDate: 'December 22, 2019', returnDate: 'January 5, 2020', destination: 'New Jersey'
+      })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
@@ -69,9 +81,13 @@ describe('app routes', () => {
 
   it('gets a trip by id', () => {
     return request(app)
-      .get('/api/v1/trips')
+      .get(`/api/v1/trips/${trip._id}`)
       .then(res => {
-        expect(res.body.itineraryItems.weather).not.toBeNull;
+        console.log(res.body);
+        expect(res.body).not.toBeNull;
       });
   });
+
+
+
 });
