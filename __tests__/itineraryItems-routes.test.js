@@ -32,13 +32,14 @@ describe('app routes', () => {
       .create({
         name: 'London',
         dateOfEvent: 28,
-        monthOfEvent: 12,
+        monthOfEvent: 11,
         yearOfEvent: 2019,
-        latitudeOfEvent: 40.51,
-        longitudeOfEvent: -74.64,
+        latitudeOfEvent: 51.5,
+        longitudeOfEvent: -.12,
         tripId: londonTrip._id,
-        woeId: 44418      
+        woeid: 444418
       });
+
   });
 
   afterAll(() => {
@@ -55,8 +56,7 @@ describe('app routes', () => {
         yearOfEvent: 2019,
         latitudeOfEvent: 51.5,
         longitudeOfEvent: -0.12,
-        tripId: londonTrip._id,
-        woeId: 44418
+        tripId: londonTrip._id
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -68,10 +68,30 @@ describe('app routes', () => {
           latitudeOfEvent: 51.5,
           longitudeOfEvent: -0.12,
           tripId: londonTrip._id.toString(),
-          woeId: expect.any(Number),
+          woeid: res.body.woeid,
           __v: 0
         });
       });
+  });
+
+  it('deletes an itinerary item', () => {
+    return request(app)
+      .delete(`/api/v1/itineraryItems/${longBuckby._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'London',
+          dateOfEvent: 28,
+          monthOfEvent: 11,
+          yearOfEvent: 2019,
+          latitudeOfEvent: 51.5,
+          longitudeOfEvent: -0.12,
+          tripId: expect.any(String),
+          woeid: 444418,
+          __v: 0
+        });
+      });
+
   });
 
 });
