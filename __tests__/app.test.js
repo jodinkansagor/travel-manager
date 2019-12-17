@@ -5,19 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Trip = require('../lib/Models/Trip');
-// const ItineraryItem = require('../lib/Models/ItineraryItem');
 
-// jest.mock('../lib/services/woeid.js', () => ({
-//   getWoeId() {
-//     return Promise.resolve('my woeId');
-//   }
-// }));
-
-// jest.mock('../lib/services/weather.js', () => ({
-//   fetchWeather() {
-//     return Promise.resolve('My weather');
-//   }
-// }));
 
 
 
@@ -29,33 +17,6 @@ describe('app routes', () => {
   beforeEach(() => {
     return mongoose.connection.dropDatabase();
   });
-
-  // let trip;
-  // let intineraryItem;
-  // beforeEach(async () => {
-  //   trip = await Trip
-  //     .create({
-  //       name: 'new vacation',
-  //       departureDate: 'December 22, 2019',
-  //       returnDate: 'January 5, 2020',
-  //       destination: 'New Jersey'
-  //     });
-  //   intineraryItem = await ItineraryItem
-  //     .create([
-  //       {
-  //         name: 'Duke Gardens',
-  //         dateOfEvent: 28,
-  //         monthOfEvent: 12,
-  //         yearOfEvent: 2019,
-  //         latitudeOfEvent: 40.51,
-  //         longitudeOfEvent: -74.64,
-  //         trip: `${trip._id}`,
-  //         weather: 'its freakin raining'
-  //       }
-  //     ]);
-  // });
-
-
 
   afterAll(() => {
     return mongoose.connection.close();
