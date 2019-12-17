@@ -120,6 +120,27 @@ describe('app routes', () => {
       });
   });
 
+  it('can update one trip', async () => {
+    const trip = await Trip.create({
+      name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
+      returnDate: '2020-01-05T08:00:00.000Z',
+      destination: 'New Jersey'
+    });
+
+    return request(app)
+      .patch(`/api/v1/trips/${trip._id}`)
+      .send({ name: 'excited to be home' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'excited to be home', departureDate: '2019-12-22T08:00:00.000Z',
+          returnDate: '2020-01-05T08:00:00.000Z',
+          destination: 'New Jersey',
+          __v: 0
+        });
+      });
+  });
+
 
 
 });
