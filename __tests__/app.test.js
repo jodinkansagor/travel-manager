@@ -99,14 +99,26 @@ describe('app routes', () => {
       });
   });
 
-  // it('gets a trip by id', () => {
-  //   return request(app)
-  //     .get(`/api/v1/trips/${trip._id}`)
-  //     .then(res => {
-  //       console.log(res.body);
-  //       expect(res.body).not.toBeNull;
-  //     });
-  // });
+  it('gets a trip by id', async () => {
+    const trip = await Trip.create({
+      name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
+      returnDate: '2020-01-05T08:00:00.000Z',
+      destination: 'New Jersey'
+    });
+
+    return request(app)
+      .get(`/api/v1/trips/${trip._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'go home', departureDate: '2019-12-22T08:00:00.000Z',
+          returnDate: '2020-01-05T08:00:00.000Z',
+          destination: 'New Jersey',
+          itineraryItems: [],
+          __v: 0
+        });
+      });
+  });
 
 
 
