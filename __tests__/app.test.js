@@ -8,7 +8,7 @@ const Trip = require('../lib/Models/Trip');
 const ItineraryItem = require('../lib/Models/ItineraryItem');
 
 jest.mock('../lib/services/woeid.js', () => ({
-  makeWoeIdCall() {
+  getWoeId() {
     return Promise.resolve('my woeId');
   }
 }));
